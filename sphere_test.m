@@ -7,6 +7,6 @@ hold on
 scatter3(c(1),c(2),c(3));
 [xx,y,z] = sphere;
 % surf(xx*+a,y+b,z+c);
-surf(xx*r+c(1), y*r+c(2), z*r+c(3),'FaceAlpha',0.1);
+surf(xx*r+c(1), y*r+c(2), z*r+c(3),'FaceAlpha',0.1,'FaceColor','none');
 axis equal
 
