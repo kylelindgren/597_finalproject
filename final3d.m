@@ -11,21 +11,21 @@ e = 5; % error
 sigma = 1;
 distance = 0;
 bounds = 200; % 200x200
-[L,iter,x0] = genConnectLap3d(n,bounds,V);
+%[L,iter,x0] = genConnectLap3d(n,bounds,V);
 %% 
 se = 1; ce = 0; % bools for sensor, control error existence
 [x_,y_,z_,phases,L] = finalsim3d(x0,L,N,sigma,V,e,se,ce);
 for i=1:n
-    distance = distance + norm([x_(i,1)-x_(i,end) y_(i,1)-y_(i,end)]);
+    distance = distance + norm([x_(i,1)-x_(i,end) y_(i,1)-y_(i,end) z_(i,1)-z_(i,end)]);
 end
 % csvwrite('fig5_phases_se5_n10_x.csv',x_',1,1);
 % csvwrite('fig5_phases_se5_n10_y.csv',y_',1,1);
 
 %plot(x_,y_)
-scatter3(x0(:,1),x0(:,2),x0(:,3),'ko','LineWidth',2,'MarkerSize',10)
-hold on
-scatter3(x_(:,end),y_(:,end),z_(:,end),'ro','LineWidth',2,'MarkerSize',5)
-axis([0 bounds 0 bounds]);
+scatter3(x0(:,1),x0(:,2),x0(:,3),'ko','LineWidth',2)
+% hold on
+% scatter3(x_(:,end),y_(:,end),z_(:,end),'ro','LineWidth',2,'MarkerSize',5)
+axis([0 bounds 0 bounds 0 bounds]);
 
 % 
 % B = 1.0;
