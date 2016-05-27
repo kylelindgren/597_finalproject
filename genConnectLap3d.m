@@ -11,7 +11,8 @@ function [L,iter,x0] = genConnectLap3d(n,bounds,V)
                 if w ~= i 
                     distw = norm([x0(i,1)-x0(w,1), x0(i,2)-x0(w,2), x0(i,3)-x0(w,3)]);
                     if distw <= V 
-                        %% bookmark
+                        % check obstruction in xy plane
+                        xyobstructed = 0;
                         thetaiw  = atan2(x0(w,2)-x0(i,2), x0(w,1)-x0(i,1));
                         thetaiwp = thetaiw + 0.5*pi;
                         thetaiwm = thetaiw - 0.5*pi;                    
@@ -22,7 +23,7 @@ function [L,iter,x0] = genConnectLap3d(n,bounds,V)
                         thetabc = atan2(C(2)-B(2), C(1)-B(1));
                         thetaad = atan2(D(2)-A(2), D(1)-A(1));
                         for q=1:n % check all other nodes less than w dist from i
-                            if q~=w && q~=i && ~obstructed
+                            if q~=w && q~=i && ~xyobstructed
                                 distq = norm([x0(i,1)-x0(q,1), x0(i,2)-x0(q,2)]);
                                 if distq < distw
                                     thetabq = atan2(x0(q,2)-B(2), x0(q,1)-B(1));
@@ -40,7 +41,43 @@ function [L,iter,x0] = genConnectLap3d(n,bounds,V)
                                         thetaad = thetaad + 2*pi;
                                     end
                                     if thetabq > thetabc && thetaaq < thetaad
-                                        obstructed = 1;
+                                        xyobstructed = 1;
+                                    end
+                                end
+                            end
+                        end
+                        % check xz plane
+                        if xyobstructed
+                            thetaiw  = atan2(x0(w,3)-x0(i,3), x0(w,1)-x0(i,1));
+                            thetaiwp = thetaiw + 0.5*pi;
+                            thetaiwm = thetaiw - 0.5*pi;                    
+                            A = [x0(i,1) x0(i,3)] + 0.5*[cos(thetaiwp),sin(thetaiwp)];
+                            B = [x0(i,1) x0(i,3)] + 0.5*[cos(thetaiwm),sin(thetaiwm)];
+                            C = [x0(w,1) x0(w,3)] + [cos(thetaiwm),sin(thetaiwm)];
+                            D = [x0(w,1) x0(w,3)] + [cos(thetaiwp),sin(thetaiwp)];
+                            thetabc = atan2(C(2)-B(2), C(1)-B(1));
+                            thetaad = atan2(D(2)-A(2), D(1)-A(1));
+                            for q=1:n % check all other nodes less than w dist from i
+                                if q~=w && q~=i && ~obstructed
+                                    distq = norm([x0(i,1)-x0(q,1), x0(i,3)-x0(q,3)]);
+                                    if distq < distw
+                                        thetabq = atan2(x0(q,3)-B(2), x0(q,1)-B(1));
+                                        thetaaq = atan2(x0(q,3)-A(2), x0(q,1)-A(1));
+                                        % alter angles if close to bounds,
+                                        % atan2 returns [-pi,pi]
+                                        if thetabc > 0.5*pi && thetabq < -0.5*pi
+                                            thetabq = thetabq + 2*pi;
+                                        elseif thetabc < -0.5*pi && thetabq > 0.5*pi
+                                            thetabc = thetabc + 2*pi;
+                                        end
+                                        if thetaad > 0.5*pi && thetaaq < -0.5*pi
+                                            thetaaq = thetaaq + 2*pi;
+                                        elseif thetaad < -0.5*pi && thetaaq > 0.5*pi
+                                            thetaad = thetaad + 2*pi;
+                                        end
+                                        if thetabq > thetabc && thetaaq < thetaad
+                                            obstructed = 1;
+                                        end
                                     end
                                 end
                             end

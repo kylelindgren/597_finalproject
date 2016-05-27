@@ -4,6 +4,7 @@ t = 25;
 dt = 1e-2; 
 st = 0:dt:t;
 N = length(st);
+%n = cast(10,'int64');
 n = 10;
 V = 50;
 e = 5; % error
@@ -11,7 +12,7 @@ sigma = 1;
 distance = 0;
 bounds = 200; % 200x200
 [L,iter,x0] = genConnectLap3d(n,bounds,V);
-
+%% 
 se = 1; ce = 0; % bools for sensor, control error existence
 [x_,y_,z_,phases,L] = finalsim3d(x0,L,N,sigma,V,e,se,ce);
 for i=1:n
