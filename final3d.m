@@ -28,3 +28,16 @@ scatter3(x_(:,pt2),y_(:,pt2),z_(:,pt2),'g+','LineWidth',2)
 scatter3(x_(:,pt3),y_(:,pt3),z_(:,pt3),'mx','LineWidth',2)
 scatter3(x_(:,end),y_(:,end),z_(:,end),'ro','LineWidth',2)
 axis([0 bounds 0 bounds 0 bounds]);
+% figure
+% for i=1:n
+%     pts = [x0(i,3),x0(i,3),x0(i,3);
+%            x_(i,pt1),y_(i,pt1),z_(i,pt1);
+%            x_(i,pt2),y_(i,pt2),z_(i,pt2);
+%            x_(i,pt3),y_(i,pt3),z_(i,pt3);
+%            x_(i,end),y_(i,end),z_(i,end)];
+%     scatter3(pts(:,1),pts(:,2),pts(:,3),'b*','LineWidth',1);
+%     line(pts(:,1),pts(:,2),pts(:,3));
+%     hold on
+%     axis([0 bounds 0 bounds 0 bounds]);
+% end
+% axis([0 bounds 0 bounds 0 bounds]);
