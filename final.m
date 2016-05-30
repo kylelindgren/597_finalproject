@@ -4,7 +4,7 @@ t = 25;
 dt = 1e-2; 
 st = 0:dt:t;
 N = length(st);
-n = 10;
+n = 50;
 V = 50;
 e = 5; % error
 sigma = 1;
@@ -25,6 +25,10 @@ plot(x0(:,1),x0(:,2),'ko','LineWidth',2,'MarkerSize',10)
 hold on
 plot(x_(:,end),y_(:,end),'ro','LineWidth',2,'MarkerSize',5)
 axis([0 bounds 0 bounds]);
+legend('Initial conditions','Final position','location', 'southeast');
+title('Circumcenter Algorithm 2D with n=50');
+ylabel('y position');
+xlabel('x position');
 
 % 
 % B = 1.0;
