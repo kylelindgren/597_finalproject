@@ -27,6 +27,13 @@ if sum(isnan(X(:)) | isinf(X(:)))>0
     error('Point data contains NaN or Inf entries. Remove them and try again.')
 end
 
+% Get the minimum bounding sphere - ??
+% if size(X,1)<=4
+%     [R,C]=FitSphere2Points(X); 
+%     Xb=X;
+%     return
+% end
+
 % Get the convex hull of the point set
 F=convhulln(X);
 F=unique(F(:));

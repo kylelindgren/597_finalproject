@@ -115,6 +115,7 @@ function [x_,y_,z_,j,L] = final3dsim(x0,L,N,sigma,V,e,se,ce)
                 for d = 1:size(circle_pts,1)
                     center = center + circle_pts(d,:);
                 end
+                center = center./size(circle_pts,1);
                 radius = 0;
                 for d = 1:size(circle_pts,1)
                     temp = norm(center - circle_pts(d,:));
@@ -122,7 +123,7 @@ function [x_,y_,z_,j,L] = final3dsim(x0,L,N,sigma,V,e,se,ce)
                         radius = temp;
                     end
                 end
-                center = center./size(circle_pts,1);
+                
             end
             goal_step = [(center(1,1)-x_(i,j)) (center(1,2)-y_(i,j)) (center(1,3)-z_(i,j))];
             if norm(goal_step) == 0 % divide by zero check
@@ -159,17 +160,17 @@ function [x_,y_,z_,j,L] = final3dsim(x0,L,N,sigma,V,e,se,ce)
             x_(i,j+1) = x_(i,j) + step(1);
             y_(i,j+1) = y_(i,j) + step(2);
             z_(i,j+1) = z_(i,j) + step(3);
-            swerve = 0; % flag to only swerve once
-            for r=1:n
-                if r ~= i && ~swerve 
-                    if norm([x_(i,j+1)-x_(r,j), y_(i,j+1)-y_(r,j), z_(i,j+1)-z_(r,j)]) <= 1
-                        swerve = 1; % swerve right, decrease speed by 0.5
-                        theta = atan2(step(2),step(1)) - 0.5*pi;
-                        dist  = norm(step)*0.5*sigma;
-                        step  = dist.*[cos(theta) sin(theta) 0] + [0 0 step(3)]; % z unchanged
-                    end
-                end
-            end
+%             swerve = 0; % flag to only swerve once
+%             for r=1:n
+%                 if r ~= i && ~swerve 
+%                     if norm([x_(i,j+1)-x_(r,j), y_(i,j+1)-y_(r,j), z_(i,j+1)-z_(r,j)]) <= 1
+%                         swerve = 1; % swerve right, decrease speed by 0.5
+%                         theta = atan2(step(2),step(1)) - 0.5*pi;
+%                         dist  = norm(step)*0.5*sigma;
+%                         step  = dist.*[cos(theta) sin(theta) 0] + [0 0 step(3)]; % z unchanged
+%                     end
+%                 end
+%             end
             cdist  = norm(step);
             if cdist == 0
                 cdir = [0 0 0];
@@ -188,7 +189,7 @@ function [x_,y_,z_,j,L] = final3dsim(x0,L,N,sigma,V,e,se,ce)
             y_(i,j+1) = y_(i,j) + step(2);
             z_(i,j+1) = z_(i,j) + step(3);
         end
-        if prod(round(10*(x_(:,j+1)-x_(:,j))) == zeros(n,1)) && prod(round(10*(y_(:,j+1)-y_(:,j))) == zeros(n,1)) && prod(round(10*(z_(:,j+1)-z_(:,j))) == zeros(n,1))
+        if prod(round(1*(x_(:,j+1)-x_(:,j))) == zeros(n,1)) && prod(round(1*(y_(:,j+1)-y_(:,j))) == zeros(n,1)) && prod(round(1*(z_(:,j+1)-z_(:,j))) == zeros(n,1))
             done = 1; j = j-1; % finished one iteration ago
         end
         j = j+1;
